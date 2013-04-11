@@ -24,3 +24,9 @@ Requirements
 
 * PHP 5.3 or later
 * APC (for caching Harvest API responses)
+
+
+Screenshot
+----------
+
+![Status Board Screenshot](https://github.com/griffbrad/panic-status-board-scripts/raw/master/status-board-screenshot.png)
