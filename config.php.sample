@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * The user you'd like to single out for the SVN commit count.  This users
+ * commits will be compared to the overall commit count for the repository
+ * in the same time frame.
+ */
+define('SVN_PRIMARY_USER', 'yourusername');
+
+/**
+ * We you are storing the SVN log that should be used for this chart.  You
+ * should add a cron similar to the following to your machine:
+ *
+ *     0,15,30,45 * * * * svn log -q --xml --limit=500 https://yourrepo.com/ > ~/svn-log.xml && chmod +r ~/svn-log.xml
+ *
+ * This way we're not pulling the log too frequently and the apache user
+ * doesn't have to have access to SVN in any way.  The log only has the
+ * revision number, date, and author, so there is no sensitive information
+ * involved if you use the above command in your crontab.
+ */
+define('SVN_LOG_LOCATION', '/home/myusershomefolder/svn-log.xml');
+
+/**
+ * The number of projects you'd like to include.  The projects with the most
+ * hours will be used.  Too many projects can get pretty noisy, so 5-8 is
+ * probably a good range here.
+ */
+define('HARVEST_NUM_PROJECTS', 6);
+
+/**
+ * Whether to abbreviate project names.  If false, the full client and project
+ * name will be used.  If true, the first word of each will be used.  This
+ * makes it easier to fit a larger number of projects on the screen at once.
+ */
+define('HARVEST_ABBREVIATE_PROJECT', true);
+
+/**
+ * The email address associated with your Harvest user account.
+ */
+define('HARVEST_EMAIL', 'yourname@example.org');
+
+/**
+ * The password associated with your Harvest user account.
+ */
+define('HARVEST_PASSWORD', 'password123');
+
+/**
+ * The URL to your Harvest instance.  You only need to include the domain
+ * name, not the protocol or trailing slash.
+ */
+define('HARVEST_URL', 'example.harvestapp.com');
+
+/**
+ * Your user ID in Harvest.  You can find this by going to the "My Profile"
+ * page and grabbing the number after "/people/" in the URL.
+ */
+define('HARVEST_USER_ID', 123456);
+
+/**
+ * How long you'd like to cache responses from Harvest.  We always grab
+ * fresh data for today, but we'll cache responses for previous days in
+ * APC for this amount of time (in seconds) to avoid flooding Harvest
+ * with redundant HTTP requests whenever status polls us.
+ */
+define('HARVEST_CACHE_TTL', 3600);
+
