@@ -17,11 +17,11 @@ function request_time($day, $year)
     $key = 'hvt_stat_brd_' . $day . ':' . $year;
     $xml = apc_fetch($key, $success);
 
-    if (!$success || date('z', time() + 86400) === $day) {
+    if (!$success || (date('z', time()) + 1) === $day) {
         $xml = shell_exec($cmd);
         apc_store($key, $xml, HARVEST_CACHE_TTL);
     }
-
+    
     return simplexml_load_string($xml);
 }
 
@@ -34,7 +34,7 @@ while (4 >= count($weeks)) {
     $year  = date('Y', $unix);
     $parts = strptime("1 {$week} {$year}", '%w %U %Y');
     $time  = mktime(0, 0, 0, $parts['tm_mon'] + 1, $parts['tm_mday'], $parts['tm_year'] + 1900);
-    $title = date('M j', $time);
+    $title = date('M j', $time - (86400 * 7));
 
     $weeks[$week] = $title;
 
@@ -59,7 +59,7 @@ while (1) {
         break;
     }
 
-    $entries = request_time(date('z', $time + 86400), date('Y', $time));
+    $entries = request_time(date('z', $time) + 1, date('Y', $time));
 
     foreach ($entries->day_entries->day_entry as $entry) {
         $projectId = (string) $entry->project_id;

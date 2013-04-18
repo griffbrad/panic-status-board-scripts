@@ -2,6 +2,8 @@
 
 require_once __DIR__ . '/config.php';
 
+define('ONE_WEEK', 86400 * 7);
+
 $xml = file_get_contents(SVN_LOG_LOCATION);
 $log = simplexml_load_string($xml);
 
@@ -17,7 +19,7 @@ while (4 >= count($revsByWeek['me'])) {
     $year  = date('Y', $unix);
     $parts = strptime("1 {$week} {$year}", '%w %U %Y');
     $time  = mktime(0, 0, 0, $parts['tm_mon'] + 1, $parts['tm_mday'], $parts['tm_year'] + 1900);
-    $title = date('M j', $time);
+    $title = date('M j', $time - ONE_WEEK);
 
     $revsByWeek['me'][$week]       = array('title' => $title, 'value' => 0);
     $revsByWeek['everyone'][$week] = array('title' => $title, 'value' => 0);
